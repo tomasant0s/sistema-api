@@ -4,6 +4,12 @@ export interface Treinamento {
     nr: string;
     validade: number;
   }
+
+  export interface TreinamentoUpdate {
+    nome?: string;
+    nr?: string;
+    validade?: number;
+  }
   
   export interface TreinamentoCreate {
     nome: string;

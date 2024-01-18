@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { TreinamentoCreate } from "../interfaces/treinamento.interface";
+import { TreinamentoCreate, TreinamentoUpdate } from "../interfaces/treinamento.interface";
 import { TreinamentoUseCase } from "../useCases/treinamento.usecase";
 
 export async function treinamentoRoutes(fastify: FastifyInstance){
@@ -25,6 +25,22 @@ export async function treinamentoRoutes(fastify: FastifyInstance){
             return reply.send(treinamentos);
         } catch (error) {
             reply.status(500).send({ error: 'Erro ao obter treinamentos.' });
+        }
+    });
+
+    fastify.put<{ Params: { id: string }, Body: TreinamentoUpdate }>('/:id', async (req, reply) => {
+        const { id } = req.params;
+        const { nome, nr, validade } = req.body;
+    
+        try {
+            const data = await treinamentoUseCase.update(id, { nome, nr, validade });
+            if (data) {
+                reply.send(data);
+            } else {
+                reply.status(404).send({ error: 'Treinamento não encontrado.' });
+            }
+        } catch (error: any) {
+            reply.status(500).send({ error: `Erro ao atualizar treinamento: ${error.message}` });
         }
     });
 }

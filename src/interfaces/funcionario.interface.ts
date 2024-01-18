@@ -5,6 +5,12 @@ export interface Funcionario {
     createdAt: Date;
     updatedAt: Date;
   }
+
+export interface FuncionarioUpdate {
+  nome?: string;
+  matricula?: string;
+}
+
   
   export interface FuncionarioCreate {
     nome: string;
@@ -14,5 +20,6 @@ export interface Funcionario {
   export interface FuncionarioRepository {
     create(data: FuncionarioCreate): Promise<Funcionario>;
     findAll(): Promise<Funcionario[]>;
+    update(id: string, data: FuncionarioUpdate): Promise<Funcionario | null>;
   }
   

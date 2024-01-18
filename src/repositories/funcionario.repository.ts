@@ -3,6 +3,7 @@ import {
     Funcionario,
     FuncionarioCreate,
     FuncionarioRepository,
+    FuncionarioUpdate,
 } from "../interfaces/funcionario.interface";
 
 class FuncionarioRepositoryPrisma implements FuncionarioRepository {
@@ -27,6 +28,19 @@ class FuncionarioRepositoryPrisma implements FuncionarioRepository {
             throw new Error(`Erro ao buscar funcionários: ${error.message}`);
         }
     }
+
+    async update(id: string, data: FuncionarioUpdate): Promise<Funcionario | null> {
+        try {
+          const result = await prisma.funcionario.update({
+            where: { id },
+            data,
+          });
+          return result;
+        } catch (error: any) {
+          console.error(`Erro ao atualizar funcionário: ${error.message}`);
+          return null;
+        }
+      }
 }
 
 export { FuncionarioRepositoryPrisma };

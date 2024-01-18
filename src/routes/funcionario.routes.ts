@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { FuncionarioCreate } from "../interfaces/funcionario.interface";
+import { FuncionarioCreate, FuncionarioUpdate } from "../interfaces/funcionario.interface";
 import { FuncionarioUseCase } from "../useCases/funcionario.usecase";
 
 export async function funcionarioRoutes(fastify: FastifyInstance) {
@@ -27,4 +27,21 @@ export async function funcionarioRoutes(fastify: FastifyInstance) {
             reply.status(500).send({ error: 'Erro ao obter funcionários.' });
         }
     });
+
+    fastify.put<{ Params: { id: string }, Body: FuncionarioUpdate }>('/:id', async (req, reply) => {
+        const { id } = req.params;
+        const { nome, matricula } = req.body;
+
+        try {
+            const data = await funcionarioUseCase.update(id, { nome, matricula });
+            if (data) {
+                reply.send(data);
+            } else {
+                reply.status(404).send({ error: 'Funcionário não encontrado.' });
+            }
+        } catch (error: any) {
+            reply.status(500).send({ error: `Erro ao atualizar funcionário: ${error.message}` });
+        }
+    });
+
 }
