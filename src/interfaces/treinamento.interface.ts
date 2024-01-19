@@ -20,5 +20,6 @@ export interface Treinamento {
   export interface TreinamentoRepository {
     create(data: TreinamentoCreate): Promise<Treinamento>;
     findAll(): Promise<Treinamento[]>;
+    update(id: string, data: TreinamentoUpdate): Promise<Treinamento | null>;
   }
   

@@ -1,9 +1,16 @@
 import fastify, { FastifyInstance } from "fastify";
+import fastifyCors from '@fastify/cors';
 import { funcionarioRoutes } from "./routes/funcionario.routes";
 import { treinamentoRoutes } from "./routes/treinamento.routes";
 import { treinamentoFuncionarioRoutes } from "./routes/funcTreinamento.routes";
 
 const app: FastifyInstance = fastify({ logger: true })
+
+app.register(fastifyCors, {
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: false,
+  });
 
 app.register(funcionarioRoutes, {
     prefix: '/funcionarios'
